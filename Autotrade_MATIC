@@ -61,13 +61,13 @@ while True:
                 krw = get_balance("KRW")
                 if krw > 5000:
                     upbit.buy_market_order("KRW-MATIC", krw*0.9995)
-        if current_price / target_price > 0.1:
-            btc = get_balance("MATIC")
-            if btc > 0.69348127:
-                upbit.sell_market_order("KRW-MATIC",btc*0.9995)
+                    if current_price / target_price > 1.1:
+                        btc = get_balance("MATIC")
+                        if btc > 5000 / current_price:
+                            upbit.sell_market_order("KRW-MATIC",btc*0.9995)
         else:
             btc = get_balance("MATIC")
-            if btc > 0.69348127:
+            if btc > 5000 / current_price:
                 upbit.sell_market_order("KRW-MATIC", btc*0.9995)
         time.sleep(1)
     except Exception as e:
