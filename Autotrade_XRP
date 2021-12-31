@@ -57,14 +57,26 @@ while True:
             target_price = get_target_price("KRW-XRP", 0.7)
             current_price = get_current_price("KRW-XRP")
             ma20 = get_ma20("KRW-XRP")
-            if target_price < current_price and ma20 < current_price and current_price / target_price < 1.01:
+            btc = get_balance("XRP")
+            if target_price < current_price and current_price / target_price < 1.01:
                 krw = get_balance("KRW")
                 if krw > 5000:
                     upbit.buy_market_order("KRW-XRP", krw*0.9995)
-                    if current_price / target_price > 1.1:
-                        btc = get_balance("XRP")
-                        if btc > 5000 / current_price:
-                            upbit.sell_market_order("KRW-XRP",btc*0.9995)
+                    otc = get_balance("XRP")
+            #매수한 수량과 동일할 경우 5% 이익일 경우 50% 매도
+            if btc == otc and current_price / target_price >= 1.05:
+                sp = otc / 2
+                if sp > 5000 / current_price:
+                    upbit.sell_market_order("KRW-XRP",sp*0.9995)
+            # 10% 이익일 경우 나머지 25% 매도
+            if current_price / target_price >= 1.1:
+                if btc > 5000 / current_price:
+                    upbit.sell_market_order("KRW-XRP",btc*0.9995)  
+            # Target Price 대비 2% 손해일 경우 전량 손절
+            if btc > 5000 and current_price / target_price <= 0.98:
+                if btc > 5000 / current_price:
+                    upbit.sell_market_order("KRW-XRP",btc*0.9995)
+        # 나머지 25% 수량은 종가에 전량 매도
         else:
             btc = get_balance("XRP")
             if btc > 5000 / current_price:
