@@ -61,7 +61,7 @@ while True:
                 krw = get_balance("KRW")
                 if krw > 5000:
                     upbit.buy_market_order("KRW-BORA", krw*0.9995)
-                    if current_price / target_price > 1.1:
+                    if current_price / target_price > 1.05:
                         btc = get_balance("BORA")
                         if btc > 5000 / current_price:
                             upbit.sell_market_order("KRW-BORA",btc*0.9995)
