@@ -41,6 +41,8 @@ def get_current_price(ticker):
     """현재가 조회"""
     return pyupbit.get_orderbook(ticker=ticker)["orderbook_units"][0]["ask_price"]
 
+otc = 'otc'
+
 # 로그인
 upbit = pyupbit.Upbit(access, secret)
 print("autotrade start")
@@ -58,6 +60,12 @@ while True:
             current_price = get_current_price("KRW-BTT")
             ma20 = get_ma20("KRW-BTT")
             btc = get_balance("BTT")
+            if otc is otc:
+                if btc < 5000/current_price:
+                    otc = 0
+                else:
+                    otc = btc
+                
             if target_price < current_price and current_price / target_price < 1.01:
                 krw = get_balance("KRW")
                 if krw > 5000:
@@ -66,6 +74,7 @@ while True:
             #매도를 한번도 하지 않았고, 5% 이익일 경우 50% 매도
             if btc == otc and current_price / target_price >= 1.05:
                 sp = otc / 2
+                otc = otc / 2
                 if sp > 5000 / current_price:
                     upbit.sell_market_order("KRW-BTT",sp*0.9995)
             # 10% 이익일 경우 나머지 25% 매도
@@ -73,7 +82,7 @@ while True:
                 if btc > 5000 / current_price:
                     upbit.sell_market_order("KRW-BTT",btc*0.9995)  
             # Target Price 대비 2% 손해일 경우 전량 손절
-            if btc > 5000 and current_price / target_price <= 0.98:
+            if btc > 5000 / current_price and current_price / target_price <= 0.99:
                 if btc > 5000 / current_price:
                     upbit.sell_market_order("KRW-BTT",btc*0.9995)
         # 나머지 25% 수량은 종가에 전량 매도
