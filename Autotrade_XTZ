@@ -83,7 +83,7 @@ while True:
                 if sp > 5000 / current_price:
                     upbit.sell_market_order("KRW-XTZ",sp*0.9995)  
             # Target Price 대비 2% 손해일 경우 전량 손절
-            if btc > 5000 / current_price and current_price / target_price <= 0.99:
+            if btc > 5000 / current_price and current_price / target_price <= 0.98:
                 if btc > 5000 / current_price:
                     upbit.sell_market_order("KRW-XTZ",btc*0.9995)
         # 나머지 25% 수량은 종가에 전량 매도
