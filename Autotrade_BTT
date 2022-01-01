@@ -79,8 +79,9 @@ while True:
                     upbit.sell_market_order("KRW-BTT",sp*0.9995)
             # 10% 이익일 경우 나머지 25% 매도
             if current_price / target_price >= 1.1:
-                if btc > 5000 / current_price:
-                    upbit.sell_market_order("KRW-BTT",btc*0.9995)  
+                sp = otc / 2
+                if sp > 5000 / current_price:
+                    upbit.sell_market_order("KRW-BTT",sp*0.9995)  
             # Target Price 대비 2% 손해일 경우 전량 손절
             if btc > 5000 / current_price and current_price / target_price <= 0.99:
                 if btc > 5000 / current_price:
