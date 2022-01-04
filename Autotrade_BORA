@@ -78,7 +78,7 @@ while True:
                 if sp > 5000 / current_price:
                     upbit.sell_market_order("KRW-BORA",sp*0.9995)
             # 10% 이익일 경우 나머지 25% 매도
-            if sp = otc and current_price / target_price >= 1.1:
+            if sp == otc and current_price / target_price >= 1.1:
                 sp = otc / 2
                 if sp > 5000 / current_price:
                     upbit.sell_market_order("KRW-BORA",sp*0.9995)  
