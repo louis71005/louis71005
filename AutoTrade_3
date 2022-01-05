@@ -66,7 +66,7 @@ if cnt is cnt:
 # 자동매매 시작
 while True:
     try:
-        if get_balance("KRW") > 5000 and cnt == 0:
+        if start_time + datetime.timedelta(seconds=420) < now and get_balance("KRW") > 5000 and cnt == 0:
                 ptickers = []
                 stickers = []
                 volumes =[]
