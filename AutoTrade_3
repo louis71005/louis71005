@@ -66,6 +66,10 @@ if cnt is cnt:
 # 자동매매 시작
 while True:
     try:
+        now = datetime.datetime.now()
+        start_time = get_start_time("KRW-BTC")
+        end_time = start_time + datetime.timedelta(days=1)
+
         if start_time + datetime.timedelta(seconds=420) < now and get_balance("KRW") > 5000 and cnt == 0:
                 ptickers = []
                 stickers = []
@@ -89,10 +93,6 @@ while True:
                 fsticker = ptickers[idx]
                 ftk = stickers[idx]
                 cnt = 1                  
-
-        now = datetime.datetime.now()
-        start_time = get_start_time(fsticker)
-        end_time = start_time + datetime.timedelta(days=1)
 
         if start_time < now < end_time - datetime.timedelta(seconds=10) and cnt == 1:
             
