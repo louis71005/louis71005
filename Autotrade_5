@@ -62,19 +62,6 @@ print("TRADE START")
 if cnt is cnt:
     cnt = 0
 
-for ticker in tickers:
-    tk = ticker.split("-")
-    ma5 = get_ma5(ticker)
-    target_price = get_target_price(ticker, 0.1)
-    current_price = get_current_price(ticker)
-    btc = get_balance(tk[1])
-    
-    
-    if target_price < current_price and current_price / target_price < 1.01 and current_price > ma5:
-            ptickers.append(ticker)
-            stickers.append(tk[1])
-
-     
 
 # 자동매매 시작
 while True:
@@ -86,7 +73,7 @@ while True:
                 for ticker in tickers:
                     tk = ticker.split("-")
                     ma5 = get_ma5(ticker)
-                    target_price = get_target_price(ticker, 0.1)
+                    target_price = get_target_price(ticker, 0.3)
                     current_price = get_current_price(ticker)
                     btc = get_balance(tk[1])
                     if target_price < current_price and current_price / target_price < 1.01 and current_price > ma5:
@@ -109,7 +96,7 @@ while True:
 
         if start_time < now < end_time - datetime.timedelta(seconds=10) and cnt == 1:
             
-            target_price = get_target_price(fsticker, 0.1)
+            target_price = get_target_price(fsticker, 0.3)
             current_price = get_current_price(fsticker)
             btc = get_balance(ftk)
                         
@@ -119,7 +106,7 @@ while True:
                     upbit.buy_market_order(fsticker, krw*0.9995)
                     otc = get_balance(ftk)
             #5% 이익일 경우 전량 매도
-            if current_price / target_price >= 1.03:
+            if current_price / target_price >= 1.05:
                 if btc > 5000 / current_price:
                     upbit.sell_market_order(fsticker,btc*0.9995)
                     cnt = 0
