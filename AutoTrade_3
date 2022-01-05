@@ -80,7 +80,7 @@ while True:
                     target_price = get_target_price(ticker, 0.3)
                     current_price = get_current_price(ticker)
                     btc = get_balance(tk[1])
-                    if target_price < current_price and current_price / target_price < 1.01 and current_price > ma5:
+                    if target_price < current_price and current_price / target_price < 1.003 and current_price > ma5:
                         ptickers.append(ticker)
                         stickers.append(tk[1])
 
