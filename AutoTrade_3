@@ -70,7 +70,7 @@ while True:
         start_time = get_start_time("KRW-BTC")
         end_time = start_time + datetime.timedelta(days=1)
 
-        if now and get_balance("KRW") > 5000 and cnt == 0:
+        if start_time + datetime.timedelta(seconds=420) < now and get_balance("KRW") > 5000 and cnt == 0:
                 ptickers = []
                 stickers = []
                 volumes =[]
