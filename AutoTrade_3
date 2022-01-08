@@ -77,10 +77,10 @@ while True:
                 for ticker in tickers:
                     tk = ticker.split("-")
                     ma5 = get_ma5(ticker)
-                    target_price = get_target_price(ticker, 0.3)
+                    target_price = get_target_price(ticker, 0.2)
                     current_price = get_current_price(ticker)
                     btc = get_balance(tk[1])
-                    if target_price < current_price and current_price / target_price < 1.003 and current_price > ma5:
+                    if target_price < current_price and current_price / target_price < 1.003 and current_price > ma5 and target_price > 50 :
                         ptickers.append(ticker)
                         stickers.append(tk[1])
 
@@ -96,7 +96,7 @@ while True:
 
         if start_time < now < end_time - datetime.timedelta(seconds=10) and cnt == 1:
             
-            target_price = get_target_price(fsticker, 0.3)
+            target_price = get_target_price(fsticker, 0.2)
             current_price = get_current_price(fsticker)
             btc = get_balance(ftk)
             if otc is otc:
