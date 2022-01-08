@@ -80,7 +80,7 @@ while True:
                     target_price = get_target_price(ticker, 0.2)
                     current_price = get_current_price(ticker)
                     btc = get_balance(tk[1])
-                    if target_price < current_price and current_price / target_price < 1.003 and current_price > ma5 and target_price > 50 :
+                    if target_price < current_price and current_price / target_price < 1.003 and current_price > ma5 and target_price > 100 :
                         ptickers.append(ticker)
                         stickers.append(tk[1])
 
@@ -118,14 +118,12 @@ while True:
                 sp = otc / 2
                 otc = otc / 2
                 if sp > 5000 / current_price:
-                    upbit.sell_market_order("KRW-BORA",sp*0.9997)
-                    cnt = 0
+                    upbit.sell_market_order(fsticker,sp*0.9997)
 
-            # 5% 이익일 경우 나머지 25% 매도
-            if sp == otc and current_price / target_price >= 1.05:
-                sp = otc / 2
-                if sp > 5000 / current_price:
-                    upbit.sell_market_order("KRW-BORA",sp*0.9997)  
+            # 5% 이익일 경우 나머지 50% 매도
+            if current_price / target_price >= 1.05:
+                    upbit.sell_market_order(fsticker, btc*0.9997)
+                    cnt = 0 
             
             # Target Price 대비 1.5% 손해일 경우 전량 손절
             if current_price / target_price <= 0.985:
@@ -136,7 +134,7 @@ while True:
         else:
             btc = get_balance(ftk)
             if btc > 5000 / current_price:
-                upbit.sell_market_order(fsticker, btc*0.9995)
+                upbit.sell_market_order(fsticker, btc*0.9997)
                 cnt = 0
         time.sleep(1)
     except Exception as e:
