@@ -102,8 +102,7 @@ while True:
             if otc is otc:
                 if btc < 5000/current_price:
                     otc = 0
-                else:
-                    otc = btc
+                
             if sp is sp :
                 if btc < 5000/current_price:
                     sp = 0
