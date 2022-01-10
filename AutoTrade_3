@@ -73,7 +73,7 @@ while True:
         if get_balance("KRW") > 5000 and cnt == 0:
                 ptickers = []
                 stickers = []
-                volumes =[]
+                noises =[]
                 for ticker in tickers:
                     tk = ticker.split("-")
                     ma5 = get_ma5(ticker)
