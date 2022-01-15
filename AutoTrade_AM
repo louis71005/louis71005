@@ -80,7 +80,7 @@ while True:
                     for ticker in tickers:
                         tk = ticker.split("-")
                         ma5 = get_ma5(ticker)
-                        target_price = get_target_price(ticker, 0.3)
+                        target_price = get_target_price(ticker, 0.5)
                         current_price = get_current_price(ticker)
                         btc = get_balance(tk[1])
                         if target_price < current_price and current_price / target_price < 1.015 and current_price > ma5 and target_price > 100 and target_price < 100000:
@@ -99,14 +99,17 @@ while True:
                     idx = volumes.index(max(volumes))
                     fsticker = ptickers[idx]
                     ftk = stickers[idx]
-                    cnt = 1                  
+                    cnt = 1                 
+
             if cnt == 1:
-                target_price = get_target_price(fsticker, 0.3)
+                target_price = get_target_price(fsticker, 0.5)
                 current_price = get_current_price(fsticker)
                 btc = get_balance(ftk)
     
-                if current_price / target_price >= 1.03:
-                    upbit.sell_market_order(fsticker,sp)
+                if target_price < current_price and current_price / target_price < 1.003:
+                    krw = get_balance("KRW")
+                    if krw > 5000:
+                        upbit.buy_market_order(fsticker, krw*0.9995)
 
                 # Target Price 대비 1.5% 손해일 경우 전량 손절
                 if current_price / target_price <= 0.985:
@@ -114,7 +117,7 @@ while True:
                         upbit.sell_market_order(fsticker,btc)
                         cnt = 0
                 
-        #종가에 전량 매도
+        #10시 30초전에 전량 매도
         elif start_time + datetime.timedelta(seconds=3570) < now < start_time + datetime.timedelta(seconds=3600) :
             btc = get_balance(ftk)
             if btc > 5000 / current_price:
