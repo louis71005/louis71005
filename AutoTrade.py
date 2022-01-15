@@ -50,6 +50,9 @@ idx = 'idx'
 
 tickers = pyupbit.get_tickers(fiat="KRW")
 
+tickers.remove("KRW-MED")
+tickers.remove("KRW-MVL")
+
 ptickers = []
 stickers = []
 noises = []
@@ -79,10 +82,7 @@ while True:
                     if target_price < current_price and current_price / target_price < 1.01 and current_price > ma5 and target_price > 50 and target_price < 100000:
                         ptickers.append(ticker)
                         stickers.append(tk[1])
-                        ptickers.remove("KRW-MED")
-                        ptickers.remove("KRW-MVL")
-                        stickers.remove("MED")
-                        stickers.remove("MVL")
+                        
 
                 for pticker in ptickers:
                     atc = pyupbit.get_ohlcv(pticker,count=4)
