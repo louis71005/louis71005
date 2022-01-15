@@ -103,30 +103,17 @@ while True:
             target_price = get_target_price(fsticker, 0.3)
             current_price = get_current_price(fsticker)
             btc = get_balance(ftk)
-            if otc is otc:
-                if btc < 5000/current_price:
-                    otc = 0
         
-            if sp is sp :
-                if btc < 5000/current_price:
-                    sp = 0
-                        
             if target_price < current_price and current_price / target_price < 1.005:
                 krw = get_balance("KRW")
                 if krw > 5000:
                     upbit.buy_market_order(fsticker, krw*0.9995)
                     otc = get_balance(ftk)
-            # 매도를 한번도 하지 않았고, 2% 이익일 경우 50% 매도
-            if btc == otc and current_price / target_price >= 1.02:
-                sp = otc / 2
-                otc = otc / 2
+            # 3% 이익일 경우 전량 매도
+            if current_price / target_price > 1.03:
                 if sp > 5000 / current_price:
-                    upbit.sell_market_order(fsticker,sp)
-
-            # 4% 이익일 경우 나머지 50% 매도
-            if current_price / target_price >= 1.04:
-                    upbit.sell_market_order(fsticker, btc)
-                    cnt = 0 
+                    upbit.sell_market_order(fsticker,btc)
+                    cnt = 0
             
             # Target Price 대비 1.5% 손해일 경우 전량 손절
             if current_price / target_price <= 0.985:
