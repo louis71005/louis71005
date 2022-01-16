@@ -76,8 +76,13 @@ while True:
                 for ticker in tickers:
                     tk = ticker.split("-")
                     ma5 = get_ma5(ticker)
-                    target_price = get_target_price(ticker, 0.3)
                     current_price = get_current_price(ticker)
+                    if current_price > 500 and current_price < 100000:
+                        target_price = get_target_price(ticker,0.4)
+                    elif current_price > 10 and current_price < 500:
+                        target_price = get_target_price(ticker,0.7)
+                    else: 
+                            target_price = 1
                     btc = get_balance(tk[1])
                     if target_price < current_price and current_price / target_price < 1.01 and current_price > ma5 and target_price > 50 and target_price < 100000:
                         ptickers.append(ticker)
@@ -99,9 +104,13 @@ while True:
         end_time = start_time + datetime.timedelta(days=1)
 
         if start_time + datetime.timedelta(seconds=3600) < now < end_time - datetime.timedelta(seconds=10) and cnt == 1:
-            
-            target_price = get_target_price(fsticker, 0.3)
             current_price = get_current_price(fsticker)
+            if current_price > 500 and current_price < 100000:
+                target_price = get_target_price(fsticker,0.4)
+            elif current_price > 10 and current_price < 500:
+                target_price = get_target_price(fsticker,0.7)
+            else: 
+                target_price = 1
             btc = get_balance(ftk)
         
             if target_price < current_price and current_price / target_price < 1.005:
