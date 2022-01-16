@@ -113,10 +113,25 @@ while True:
                 target_price = 1
             btc = get_balance(ftk)
         
-            if target_price < current_price and current_price / target_price < 1.002:
-                krw = get_balance("KRW")
-                if krw > 5000:
-                    upbit.buy_market_order(fsticker, krw*0.9995)
+            if target_price < current_price :
+                if target_price > 5000:
+                    if current_price / target_price < 1.002:
+                        krw = get_balance("KRW")
+                        if krw > 5000:
+                            upbit.buy_market_order(fsticker, krw*0.9995)
+                            otc = get_balance(ftk)
+                elif 2000 < target_price < 5000:
+                    if current_price / target_price < 1.005:
+                        krw = get_balance("KRW")
+                        if krw > 5000:
+                            upbit.buy_market_order(fsticker, krw*0.9995)
+                            otc = get_balance(ftk)
+                else:
+                    if current_price / target_price < 1.01:
+                        krw = get_balance("KRW")
+                        if krw > 5000:
+                            upbit.buy_market_order(fsticker, krw*0.9995)
+                            otc = get_balance(ftk)
                     
             # 3% 이익일 경우 전량 매도
             if current_price / target_price > 1.03:
