@@ -113,7 +113,7 @@ while True:
                 target_price = 1
             btc = get_balance(ftk)
         
-            if target_price < current_price and current_price / target_price < 1.005:
+            if target_price < current_price and current_price / target_price < 1.002:
                 krw = get_balance("KRW")
                 if krw > 5000:
                     upbit.buy_market_order(fsticker, krw*0.9995)
