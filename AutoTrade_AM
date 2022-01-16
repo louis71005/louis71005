@@ -83,9 +83,16 @@ while True:
                     for ticker in tickers:
                         tk = ticker.split("-")
                         ma5 = get_ma5(ticker)
-                        target_price = get_target_price(ticker, 0.5)
                         current_price = get_current_price(ticker)
+                        if current_price > 500 and current_price < 100000:
+                            target_price = get_target_price(ticker,0.2)
+                        elif current_price > 10 and current_price < 500:
+                            target_price = get_target_price(ticker,0.5)
+                        else: 
+                            target_price = 1
+                            
                         btc = get_balance(tk[1])
+
                         if target_price < current_price and current_price / target_price < 1.015 and current_price > ma5 and target_price > 100 and target_price < 100000:
                             ptickers.append(ticker)
                             stickers.append(tk[1])
@@ -99,6 +106,7 @@ while True:
                     idx = volumes.index(max(volumes))
                     fsticker = ptickers[idx]
                     ftk = stickers[idx]
+                    print(ftk)
                     cnt = 1                 
 
             if cnt == 1:
