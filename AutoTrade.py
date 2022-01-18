@@ -56,6 +56,11 @@ tickers.remove("KRW-MVL")
 ptickers = []
 stickers = []
 noises = []
+volumes = []
+ptA = []
+ptB = []
+pts = []
+
 
 
 # 로그인
@@ -82,7 +87,8 @@ while True:
                     elif current_price > 10 and current_price < 500:
                         target_price = get_target_price(ticker,0.7)
                     else: 
-                            target_price = 1
+                        target_price = 1
+
                     btc = get_balance(tk[1])
                     if target_price < current_price and current_price / target_price < 1.01 and current_price > ma5 and target_price > 50 and target_price < 100000:
                         ptickers.append(ticker)
@@ -92,9 +98,20 @@ while True:
                 for pticker in ptickers:
                     atc = pyupbit.get_ohlcv(pticker,count=4)
                     noise = 1-abs(atc['open']-atc['close'])/abs(atc['high']-atc['low'])
+                    volume = atc['volume']
                     noises.append((noise[1]+noise[2]+noise[3])/3)
+                    volumes.append((volume[1]+volume[2]+volume[3])/3)
 
-                idx = noises.index(min(noises))
+                for noise in noises:
+                    ptA.append(abs(1-abs(0.01-noise)/len(noises))*100*0.4)
+
+                for volume in volumes:
+                    ptB.append(volume/max(volumes)*100*0.6)
+
+                for number in range(len(ptA)):
+                    pts.append(ptA[number]+ptB[number])
+
+                idx = pts.index(min(pts))
                 fsticker = ptickers[idx]
                 ftk = stickers[idx]
                 cnt = 1                  
@@ -106,7 +123,7 @@ while True:
         if start_time + datetime.timedelta(seconds=3600) < now < end_time - datetime.timedelta(seconds=10) and cnt == 1:
             current_price = get_current_price(fsticker)
             if current_price > 500 and current_price < 100000:
-                target_price = get_target_price(fsticker,0.4)
+                target_price = get_target_price(fsticker,0.3)
             elif current_price > 10 and current_price < 500:
                 target_price = get_target_price(fsticker,0.7)
             else: 
