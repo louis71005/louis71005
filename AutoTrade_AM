@@ -51,7 +51,6 @@ idx = 'idx'
 tickers = pyupbit.get_tickers(fiat="KRW")
 tickers.remove("KRW-MED")
 tickers.remove("KRW-MVL")
-tickers.remove("KRW-SAND")
 
 
 ptickers = []
@@ -125,7 +124,7 @@ while True:
                     target_price = 1
                 btc = get_balance(ftk)
     
-                if target_price < current_price:
+                if target_price < current_price and target_price / current_price < 1.015:
                     krw = get_balance("KRW")
                     if krw > 5000:
                         upbit.buy_market_order(fsticker, krw*0.9995)
