@@ -52,7 +52,6 @@ tickers = pyupbit.get_tickers(fiat="KRW")
 
 tickers.remove("KRW-MED")
 tickers.remove("KRW-MVL")
-tickers.remove("KRW-SAND")
 
 ptickers = []
 stickers = []
