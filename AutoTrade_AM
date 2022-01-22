@@ -79,7 +79,7 @@ while True:
             if get_balance("KRW") > 5000 and cnt == 0:
                     ptickers = []
                     stickers = []
-                    noises =[]
+                    volumes = []
                     for ticker in tickers:
                         tk = ticker.split("-")
                         ma5 = get_ma5(ticker)
@@ -107,7 +107,7 @@ while True:
                     for pticker in ptickers:
                         atc = pyupbit.get_ohlcv(pticker,count=4)
                         volume = atc['volume']
-                        volumes.append((volume[1]+volume[2]+volume[3])/3)
+                        volumes.append(volume[0])
 
                     idx = volumes.index(max(volumes))
                     fsticker = ptickers[idx]
