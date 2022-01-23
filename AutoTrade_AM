@@ -92,12 +92,6 @@ while True:
                             target_price = 1
                             
                         btc = get_balance(tk[1])
-                        if otc is otc:
-                            if btc < 5000/current_price:
-                                otc = 0
-                        if sp is sp :
-                            if btc < 5000/current_price:
-                                sp = 0
 
                         if target_price < current_price and current_price / target_price < 1.015 and target_price > 10 and target_price < 100000:
                             ptickers.append(ticker)
