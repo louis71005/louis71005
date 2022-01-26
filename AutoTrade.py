@@ -152,7 +152,7 @@ while True:
                     
             # 3% 이익일 경우 전량 매도
             if current_price / target_price > 1.03:
-                if sp > 5000 / current_price:
+                if btc > 5000 / current_price:
                     upbit.sell_market_order(fsticker,btc)
                     cnt = 0
             
