@@ -17,7 +17,6 @@ def get_start_time(ticker):
     start_time = df.index[0]
     return start_time
 
-
 def get_ma5(ticker):
     """5일 이동 평균선 조회"""
     df = pyupbit.get_ohlcv(ticker, interval="day", count=5)
@@ -97,10 +96,11 @@ while True:
 
                 for pticker in ptickers:
                     atc = pyupbit.get_ohlcv(pticker,count=4)
+                    atv = pyupbit.get_ohlcv(pticker,interval="minute5",count=6)
                     noise = 1-abs(atc['open']-atc['close'])/abs(atc['high']-atc['low'])
-                    volume = atc['volume']
+                    volume = atv['volume']
                     noises.append((noise[1]+noise[2]+noise[3])/3)
-                    volumes.append((volume[1]+volume[2]+volume[3])/3)
+                    volumes.append((volume[0]+volume[1]+volume[2]+volume[3]+volume[4]+volume[5])/6)
 
                 for noise in noises:
                     ptA.append(abs(1-abs(0.01-noise)/len(noises))*100*0.4)
@@ -111,13 +111,13 @@ while True:
                 for number in range(len(ptA)):
                     pts.append(ptA[number]+ptB[number])
 
-                idx = pts.index(min(pts))
+                idx = pts.index(max(pts))
                 fsticker = ptickers[idx]
                 ftk = stickers[idx]
                 cnt = 1                  
 
         now = datetime.datetime.now()
-        start_time = get_start_time(fsticker)
+        start_time = get_start_time("KRW-BTC")
         end_time = start_time + datetime.timedelta(days=1)
 
         if start_time + datetime.timedelta(seconds=3600) < now < end_time - datetime.timedelta(seconds=10) and cnt == 1:
@@ -161,10 +161,11 @@ while True:
                     cnt = 0
         #종가에 전량 매도
         else:
-            btc = get_balance(ftk)
-            if btc > 5000 / current_price:
-                upbit.sell_market_order(fsticker, btc)
-                cnt = 0
+            if ftk != ftk:
+                btc = get_balance(ftk)
+                if btc > 5000 / current_price:
+                    upbit.sell_market_order(fsticker, btc)
+                    cnt = 0
         time.sleep(1)
     except Exception as e:
         print(e)
