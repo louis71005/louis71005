@@ -82,9 +82,9 @@ while True:
                     ma5 = get_ma5(ticker)
                     current_price = get_current_price(ticker)
                     if current_price > 500 and current_price < 100000:
-                        target_price = get_target_price(ticker,0.4)
+                        target_price = get_target_price(ticker,0.25)
                     elif current_price > 10 and current_price < 500:
-                        target_price = get_target_price(ticker,0.7)
+                        target_price = get_target_price(ticker,0.5)
                     else: 
                         target_price = 1
 
@@ -111,10 +111,13 @@ while True:
                 for number in range(len(ptA)):
                     pts.append(ptA[number]+ptB[number])
 
+                print(ptickers)
+                print(pts)
                 idx = pts.index(max(pts))
                 fsticker = ptickers[idx]
                 ftk = stickers[idx]
-                cnt = 1                  
+                cnt = 1
+                print(fsticker)
 
         now = datetime.datetime.now()
         start_time = get_start_time("KRW-BTC")
@@ -123,9 +126,9 @@ while True:
         if start_time + datetime.timedelta(seconds=3600) < now < end_time - datetime.timedelta(seconds=10) and cnt == 1:
             current_price = get_current_price(fsticker)
             if current_price > 500 and current_price < 100000:
-                target_price = get_target_price(fsticker,0.3)
+                target_price = get_target_price(fsticker,0.25)
             elif current_price > 10 and current_price < 500:
-                target_price = get_target_price(fsticker,0.7)
+                target_price = get_target_price(fsticker,0.5)
             else: 
                 target_price = 1
             btc = get_balance(ftk)
@@ -154,8 +157,8 @@ while True:
                     upbit.sell_market_order(fsticker,btc)
                     cnt = 0
             
-            # Target Price 대비 1.5% 손해일 경우 전량 손절
-            if current_price / target_price <= 0.985:
+            # Target Price 대비 1% 손해일 경우 전량 손절
+            if current_price / target_price <= 0.99:
                 if btc > 5000 / current_price:
                     upbit.sell_market_order(fsticker,btc)
                     cnt = 0
