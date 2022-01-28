@@ -104,10 +104,10 @@ while True:
                     volumes.append((volume[0]+volume[1]+volume[2]+volume[3]+volume[4]+volume[5])/6)
 
                 for noise in noises:
-                    ptA.append(abs(1-abs(0.01-noise)/len(noises))*100*0.5)
+                    ptA.append(abs(1-abs(0.01-noise)/len(noises))*100*0.6)
 
                 for volume in volumes:
-                    ptB.append(volume/max(volumes)*100*0.5)
+                    ptB.append(volume/max(volumes)*100*0.4)
 
                 for number in range(len(ptA)):
                     pts.append(ptA[number]+ptB[number])
@@ -133,30 +133,30 @@ while True:
         
             if target_price < current_price :
                 if target_price > 5000:
-                    if current_price / target_price < 1.002:
+                    if current_price / target_price <= 1.002:
                         krw = get_balance("KRW")
                         if krw > 5000:
                             upbit.buy_market_order(fsticker, krw*0.9995)
 
                 elif 2000 < target_price < 5000:
-                    if current_price / target_price < 1.005:
+                    if current_price / target_price <= 1.005:
                         krw = get_balance("KRW")
                         if krw > 5000:
                             upbit.buy_market_order(fsticker, krw*0.9995)
                 else:
-                    if current_price / target_price < 1.01:
+                    if current_price / target_price <= 1.01:
                         krw = get_balance("KRW")
                         if krw > 5000:
                             upbit.buy_market_order(fsticker, krw*0.9995)
             if start_time < now < start_time + datetime.timedelta(seconds=3590):
                 # 5% 이익일 경우 전량 매도
-                if current_price / target_price > 1.05:
+                if current_price / target_price >= 1.05:
                     if btc > 5000 / current_price:
                         upbit.sell_market_order(fsticker,btc)
                         cnt = 0
             else:
                 # 3% 이익일 경우 전량 매도
-                if current_price / target_price > 1.03:
+                if current_price / target_price >= 1.03:
                     if btc > 5000 / current_price:
                         upbit.sell_market_order(fsticker,btc)
                         cnt = 0
