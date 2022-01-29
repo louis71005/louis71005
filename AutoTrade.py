@@ -49,9 +49,6 @@ idx = 'idx'
 
 tickers = pyupbit.get_tickers(fiat="KRW")
 
-tickers.remove("KRW-MED")
-tickers.remove("KRW-MVL")
-
 ptickers = []
 stickers = []
 noises = []
