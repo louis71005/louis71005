@@ -74,7 +74,7 @@ if cnt is cnt:
 # 자동매매 시작
 while True:
     try:
-        if get_balance("KRW") > 5000 and cnt == 0:
+        if cnt == 0:
                 ptickers = []
                 stickers = []
                 noises = []
@@ -97,26 +97,31 @@ while True:
 
                 for pticker in ptickers:
                     atc = pyupbit.get_ohlcv(pticker,count=4)
-                    atv = pyupbit.get_ohlcv(pticker,interval="minute5",count=6)
+                    atv = pyupbit.get_ohlcv(pticker,interval="minute15",count=6)
                     noise = 1-abs(atc['open']-atc['close'])/abs(atc['high']-atc['low'])
                     volume = atv['volume']
                     noises.append((noise[1]+noise[2]+noise[3])/3)
                     volumes.append((volume[0]+volume[1]+volume[2]+volume[3]+volume[4]+volume[5])/6)
 
                 for noise in noises:
-                    ptA.append(abs(1-abs(0.01-noise)/len(noises))*100*0.6)
+                    ptA.append(abs(1-abs(0.01-noise)/len(noises))*100*0.99)
 
                 for volume in volumes:
-                    ptB.append(volume/max(volumes)*100*0.4)
+                    ptB.append(volume/max(volumes)*100*0.01)
 
                 for number in range(len(ptA)):
                     pts.append(ptA[number]+ptB[number])
+                
 
+                print(ptickers)
+                print(ptA)
+                print(ptB)
+                print(pts)
                 idx = pts.index(max(pts))
                 fsticker = ptickers[idx]
                 ftk = stickers[idx]
                 cnt = 1
-
+                print(ftk)
         now = datetime.datetime.now()
         start_time = get_start_time("KRW-BTC")
         end_time = start_time + datetime.timedelta(days=1)
@@ -136,35 +141,35 @@ while True:
                     if current_price / target_price <= 1.005:
                         krw = get_balance("KRW")
                         if krw > 5000:
-                            upbit.buy_market_order(fsticker, krw*0.9995)
+                            print("BUY")
 
                 elif 2000 < target_price < 5000:
                     if current_price / target_price <= 1.01:
                         krw = get_balance("KRW")
                         if krw > 5000:
-                            upbit.buy_market_order(fsticker, krw*0.9995)
+                            print("BUY")
                 else:
                     if current_price / target_price <= 1.015:
                         krw = get_balance("KRW")
                         if krw > 5000:
-                            upbit.buy_market_order(fsticker, krw*0.9995)
+                            print("BUY")
             if start_time < now < start_time + datetime.timedelta(seconds=3590):
                 # 5% 이익일 경우 전량 매도
                 if current_price / target_price >= 1.05:
                     if btc > 5000 / current_price:
-                        upbit.sell_market_order(fsticker,btc)
+                        print("SELL")
                         cnt = 0
             else:
                 # 3% 이익일 경우 전량 매도
                 if current_price / target_price >= 1.03:
                     if btc > 5000 / current_price:
-                        upbit.sell_market_order(fsticker,btc)
+                        print("SELL")
                         cnt = 0
             
             # Target Price 대비 1% 손해일 경우 전량 손절
             if current_price / target_price <= 0.99:
                 if btc > 5000 / current_price:
-                    upbit.sell_market_order(fsticker,btc)
+                    print("SELL")
                     cnt = 0
         #종가에 전량 매도
         else:
