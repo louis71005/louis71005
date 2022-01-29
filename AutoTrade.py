@@ -94,7 +94,7 @@ while True:
 
                 for pticker in ptickers:
                     atc = pyupbit.get_ohlcv(pticker,count=4)
-                    atv = pyupbit.get_ohlcv(pticker,interval="minute15",count=6)
+                    atv = pyupbit.get_ohlcv(pticker,interval="minute5",count=6)
                     noise = 1-abs(atc['open']-atc['close'])/abs(atc['high']-atc['low'])
                     volume = atv['volume']
                     noises.append((noise[1]+noise[2]+noise[3])/3)
