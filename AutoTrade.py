@@ -165,11 +165,9 @@ while True:
                     cnt = 0
         #종가에 전량 매도
         else:
-            if ftk != ftk:
-                btc = get_balance(ftk)
-                if btc > 5000 / current_price:
-                    upbit.sell_market_order(fsticker, btc)
-                    cnt = 0
+            if btc > 5000 / current_price:
+                upbit.sell_market_order(fsticker, btc)
+                cnt = 0
         time.sleep(1)
     except Exception as e:
         print(e)
