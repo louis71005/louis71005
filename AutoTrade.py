@@ -159,7 +159,7 @@ while True:
                         cnt = 0
             
             # Target Price 대비 1% 손해일 경우 전량 손절
-            if current_price / target_price <= 0.99:
+            if current_price / target_price <= 0.985:
                 if btc > 5000 / current_price:
                     upbit.sell_market_order(fsticker,btc)
                     cnt = 0
