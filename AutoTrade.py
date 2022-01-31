@@ -167,7 +167,7 @@ while True:
         else:
             if btc > 5000 / current_price:
                 upbit.sell_market_order(fsticker, btc)
-                cnt = 0
+            cnt = 0
         time.sleep(1)
     except Exception as e:
         print(e)
