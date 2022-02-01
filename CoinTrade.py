@@ -49,8 +49,7 @@ idx = 'idx'
 
 tickers = pyupbit.get_tickers(fiat="KRW")
 
-tickers.remove("KRW-MED")
-tickers.remove("KRW-MVL")
+
 
 ptickers = []
 stickers = []
@@ -78,6 +77,10 @@ while True:
                 ptickers = []
                 stickers = []
                 noises = []
+
+                for rest in reset:
+                    tickers.remove(rest)
+
                 for ticker in tickers:
                     tk = ticker.split("-")
                     ma5 = get_ma5(ticker)
@@ -93,35 +96,36 @@ while True:
                     if target_price < current_price and current_price / target_price < 1.01 and current_price > ma5 and target_price > 50 and target_price < 100000:
                         ptickers.append(ticker)
                         stickers.append(tk[1])
-                        
+
 
                 for pticker in ptickers:
                     atc = pyupbit.get_ohlcv(pticker,count=4)
-                    atv = pyupbit.get_ohlcv(pticker,interval="minute5",count=6)
+                    atv = pyupbit.get_ohlcv(pticker,interval="minute60",count=2)
                     noise = 1-abs(atc['open']-atc['close'])/abs(atc['high']-atc['low'])
                     volume = atv['volume']
                     noises.append((noise[1]+noise[2]+noise[3])/3)
-                    volumes.append((volume[0]+volume[1]+volume[2]+volume[3]+volume[4]+volume[5])/6)
+                    volumes.append(volume[1])
 
                 for noise in noises:
-                    ptA.append(abs(1-abs(0.01-noise)/len(noises))*100*0.6)
+                    ptA.append(abs(1-abs(0.01-noise)/len(noises))*100*0.95)
 
                 for volume in volumes:
-                    ptB.append(volume/max(volumes)*100*0.4)
+                    ptB.append(volume/max(volumes)*100*0.05)
 
                 for number in range(len(ptA)):
                     pts.append(ptA[number]+ptB[number])
 
-                idx = pts.index(max(pts))
-                fsticker = ptickers[idx]
-                ftk = stickers[idx]
-                cnt = 1
+                if len(ptickers) > 1 :
+                    idx = pts.index(max(pts))
+                    fsticker = ptickers[idx]
+                    ftk = stickers[idx]
+                    cnt = 1
 
         now = datetime.datetime.now()
         start_time = get_start_time("KRW-BTC")
         end_time = start_time + datetime.timedelta(days=1)
 
-        if start_time < now < end_time - datetime.timedelta(seconds=10) and cnt == 1:
+        if start_time + datetime.timedelta(seconds=3600) < now < end_time - datetime.timedelta(seconds=10) and cnt == 1:
             current_price = get_current_price(fsticker)
             if current_price > 500 and current_price < 100000:
                 target_price = get_target_price(fsticker,0.3)
@@ -130,51 +134,49 @@ while True:
             else: 
                 target_price = 1
             btc = get_balance(ftk)
-        
+
             if target_price < current_price :
                 if target_price > 5000:
-                    if current_price / target_price <= 1.002:
+                    if current_price / target_price <= 1.003:
                         krw = get_balance("KRW")
                         if krw > 5000:
                             upbit.buy_market_order(fsticker, krw*0.9995)
+                            reset.append fsticker
 
                 elif 2000 < target_price < 5000:
                     if current_price / target_price <= 1.005:
                         krw = get_balance("KRW")
                         if krw > 5000:
                             upbit.buy_market_order(fsticker, krw*0.9995)
+
                 else:
                     if current_price / target_price <= 1.01:
                         krw = get_balance("KRW")
                         if krw > 5000:
                             upbit.buy_market_order(fsticker, krw*0.9995)
 
-            if start_time < now < start_time + datetime.timedelta(seconds=3590):
-                # 5% 이익일 경우 전량 매도
-                if current_price / target_price >= 1.05:
-                    if btc > 5000 / current_price:
-                        upbit.sell_market_order(fsticker,btc)
-                        cnt = 0
-            else:
-                # 3% 이익일 경우 전량 매도
-                if current_price / target_price >= 1.03:
-                    if btc > 5000 / current_price:
-                        upbit.sell_market_order(fsticker,btc)
-                        cnt = 0
-            
+
+            # 3% 이익일 경우 전량 매도
+            if current_price / target_price >= 1.03:
+                if btc > 5000 / current_price:
+                    upbit.sell_market_order(fsticker,btc)
+                    reset.append(fsticker)
+                    cnt = 0
+
             # Target Price 대비 1% 손해일 경우 전량 손절
             if current_price / target_price <= 0.99:
                 if btc > 5000 / current_price:
                     upbit.sell_market_order(fsticker,btc)
+                    reset.append(fsticker)
                     cnt = 0
-                    
+
         #종가에 전량 매도
         else:
-            if ftk != ftk:
-                btc = get_balance(ftk)
-                if btc > 5000 / current_price:
-                    upbit.sell_market_order(fsticker, btc)
-                    cnt = 0
+            cnt = 0
+            reset = []
+            if btc > 5000 / current_price:
+                upbit.sell_market_order(fsticker, btc)
+
         time.sleep(1)
     except Exception as e:
         print(e)
