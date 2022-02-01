@@ -141,7 +141,6 @@ while True:
                         krw = get_balance("KRW")
                         if krw > 5000:
                             upbit.buy_market_order(fsticker, krw*0.9995)
-                            reset.append fsticker
 
                 elif 2000 < target_price < 5000:
                     if current_price / target_price <= 1.005:
