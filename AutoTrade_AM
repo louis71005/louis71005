@@ -103,9 +103,9 @@ while True:
                             
 
                     for pticker in ptickers:
-                        atc = pyupbit.get_ohlcv(pticker,count=4)
+                        atc = pyupbit.get_ohlcv(pticker,interval="minute5",count=2)
                         volume = atc['volume']
-                        volumes.append((volume[1]+volume[2]+volume[3])/3)
+                        volumes.append((volume[1]+volume[2])/2)
 
                     idx = volumes.index(max(volumes))
                     fsticker = ptickers[idx]
