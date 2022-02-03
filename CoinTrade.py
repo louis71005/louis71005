@@ -77,6 +77,11 @@ while True:
                 ptickers = []
                 stickers = []
                 noises = []
+                volume = []
+                ptA = []
+                ptB = []
+                pts = []
+                reset = []
 
                 for rest in reset:
                     if rest in tickers:
