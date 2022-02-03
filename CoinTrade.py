@@ -114,10 +114,10 @@ while True:
                     volumes.append(volume[1])
 
                 for noise in noises:
-                    ptA.append(abs(1-abs(0.01-noise)/len(noises))*100*0.95)
+                    ptA.append(abs(1-abs(0.01-noise)/len(noises))*100*0.98)
 
                 for volume in volumes:
-                    ptB.append(volume/max(volumes)*100*0.05)
+                    ptB.append(volume/max(volumes)*100*0.02)
 
                 for number in range(len(ptA)):
                     pts.append(ptA[number]+ptB[number])
