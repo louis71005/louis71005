@@ -60,8 +60,6 @@ ptB = []
 pts = []
 reset = []
 
-
-
 # 로그인
 upbit = pyupbit.Upbit(access, secret)
 print("TRADE START")  
@@ -73,19 +71,19 @@ if cnt is cnt:
 # 자동매매 시작
 while True:
     try:
-        if get_balance("KRW") > 5000 and cnt == 0:
+        if cnt == 0:
                 ptickers = []
                 stickers = []
                 noises = []
-                volume = []
+                volumes = []
                 ptA = []
                 ptB = []
                 pts = []
-                reset = []
-
+                
                 for rest in reset:
                     if rest in tickers:
                         tickers.remove(rest)
+                        print("Remove")
 
                 for ticker in tickers:
                     tk = ticker.split("-")
@@ -102,8 +100,7 @@ while True:
                     if target_price < current_price and current_price / target_price < 1.01 and current_price > ma5 and target_price > 50 and target_price < 100000:
                         ptickers.append(ticker)
                         stickers.append(tk[1])
-                        
-
+        
                 for pticker in ptickers:
                     atc = pyupbit.get_ohlcv(pticker,count=4)
                     atv = pyupbit.get_ohlcv(pticker,interval="minute60",count=2)
@@ -112,6 +109,7 @@ while True:
                     volume = atv['volume']
                     noises.append((noise[1]+noise[2]+noise[3])/3)
                     volumes.append(volume[1])
+                
 
                 for noise in noises:
                     ptA.append(abs(1-abs(0.01-noise)/len(noises))*100*0.98)
@@ -127,6 +125,13 @@ while True:
                     fsticker = ptickers[idx]
                     ftk = stickers[idx]
                     cnt = 1
+
+                print(ptickers)
+                print(ptA)
+                print(ptB)
+                print(pts)
+                print(fsticker)
+
 
         now = datetime.datetime.now()
         start_time = get_start_time("KRW-BTC")
@@ -179,7 +184,6 @@ while True:
             if current_price / target_price <= 0.99:
                 if btc > 5000 / current_price:
                     upbit.sell_market_order(fsticker,btc)
-                    reset.append(fsticker)
                     cnt = 0
 
         #종가에 전량 매도
